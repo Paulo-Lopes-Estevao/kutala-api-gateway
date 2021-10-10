@@ -11,7 +11,7 @@ import (
 )
 
 func TestNewMicroservice(t *testing.T) {
-	m_service := domain.NewMicroservice(faker.Name(), "http", "172.0.0.1", "demo", "demo")
+	m_service := domain.NewMicroservice(faker.Name(), "demo", "demo")
 	fmt.Println(m_service)
 }
 
@@ -21,7 +21,7 @@ func TestInsertMicroservice(t *testing.T) {
 
 	repository := repository.MicroserviceRepository{Db: conectdb}
 
-	m_service := domain.NewMicroservice(faker.Name(), "http", "172.0.0.1", "demo", "demo")
+	m_service := domain.NewMicroservice(faker.Name(), "demo", "demo")
 
 	repository.InsertMicroservice(m_service)
 
