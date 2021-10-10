@@ -1,6 +1,7 @@
-package db
+package database
 
 import (
+	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/domain"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
@@ -22,6 +23,8 @@ func ConnectionDB() *gorm.DB {
 		panic("failed to connect database")
 
 	}
+
+	db.AutoMigrate(&domain.Microservice{})
 
 	return db
 
