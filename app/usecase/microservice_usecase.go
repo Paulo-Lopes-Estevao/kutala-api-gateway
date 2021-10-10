@@ -2,14 +2,14 @@ package usecase
 
 import (
 	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/app/repository"
-	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/domain"
+	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/entities"
 )
 
 type MicroserviceUseCase struct {
 	MicroserviceRepository repository.MicroserviceRepository
 }
 
-func (usecase MicroserviceUseCase) CreateMicroService(microservice *domain.Microservice) (*domain.Microservice, error) {
+func (usecase MicroserviceUseCase) CreateMicroService(microservice *entities.Microservice) (*entities.Microservice, error) {
 	microservices, err := usecase.MicroserviceRepository.InsertMicroservice(microservice)
 
 	if err != nil {

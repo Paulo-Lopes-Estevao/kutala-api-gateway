@@ -6,12 +6,12 @@ import (
 
 	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/app/repository"
 	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/app/usecase"
-	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/domain"
+	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/entities"
 	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/utils/database"
 	"github.com/bxcodec/faker/v3"
 )
 
-var m_service = domain.NewMicroservice(faker.Name(), "demo", "demo")
+var m_service = entities.NewMicroservice(faker.Name(), "demo", "demo")
 
 var conectdb = database.ConnectionDB()
 var repositories = repository.MicroserviceRepository{Db: conectdb}
@@ -29,7 +29,7 @@ func TestRepositoryInsertMicroservice(t *testing.T) {
 
 func TestUsecaseCreateMicroservice(t *testing.T) {
 	defer conectdb.Close()
-	result,_:=usecases.CreateMicroService(m_service)
+	result, _ := usecases.CreateMicroService(m_service)
 	fmt.Println(result)
 
 }
