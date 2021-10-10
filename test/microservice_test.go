@@ -6,7 +6,7 @@ import (
 
 	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/app/repository"
 	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/app/usecase"
-	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/entities"
+	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/domain/entities"
 	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/utils/database"
 	"github.com/bxcodec/faker/v3"
 )

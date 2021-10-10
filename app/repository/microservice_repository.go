@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/entities"
+	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/domain/entities"
 	"github.com/jinzhu/gorm"
 )
 
