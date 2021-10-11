@@ -5,12 +5,22 @@ import (
 	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/domain/entities"
 )
 
-type MicroserviceUseCase struct {
-	MicroserviceRepository repository.MicroserviceRepository
+type MicroserviceUseCaseInterface interface {
+	CreateMicroService(microservice *entities.Microservice) (*entities.Microservice, error)
 }
 
-func (usecase MicroserviceUseCase) CreateMicroService(microservice *entities.Microservice) (*entities.Microservice, error) {
-	microservices, err := usecase.MicroserviceRepository.InsertMicroservice(microservice)
+type microserviceUseCase struct {
+	microserviceRepository repository.MicroserviceRepositoryInterface
+}
+
+
+func NewMicroserviceUseCase(repository repository.MicroserviceRepositoryInterface) MicroserviceUseCaseInterface {
+	return &microserviceUseCase{repository}
+}
+
+
+func (usecase *microserviceUseCase) CreateMicroService(microservice *entities.Microservice) (*entities.Microservice, error) {
+	microservices, err := usecase.microserviceRepository.InsertMicroservice(microservice)
 
 	if err != nil {
 		return nil, err
