@@ -1,6 +1,11 @@
 package entities
 
-import "time"
+import (
+	"time"
+
+	"github.com/asaskevich/govalidator"
+	"golang.org/x/crypto/bcrypt"
+)
 
 type Microservice struct {
 	Id       string    `json:"id"`
@@ -12,7 +17,7 @@ type Microservice struct {
 	Updated  time.Time `json:"updated"`
 }
 
-func NewMicroservice(name string, username string, password string) *Microservice {
+func NewMicroservice(name string, username string, password string) (*Microservice, error) {
 	microservice := &Microservice{
 		Name:     name,
 		Username: username,
@@ -21,5 +26,47 @@ func NewMicroservice(name string, username string, password string) *Microservic
 		Created:  time.Now(),
 		Updated:  time.Now(),
 	}
-	return microservice
+
+	err := microservice.passwordEncrypt()
+
+	if err != nil {
+		return nil, err
+	}
+
+	return microservice, nil
+}
+
+func (microservice *Microservice) passwordEncrypt() error {
+	password, err := bcrypt.GenerateFromPassword([]byte(microservice.Password), bcrypt.DefaultCost)
+
+	if err != nil {
+		return err
+	}
+
+	microservice.Password = string(password)
+
+	err = microservice.validate()
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+
+}
+
+func (microservice *Microservice) VerifyPassword(password string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(microservice.Password), []byte(password))
+	return err == nil
+}
+
+func (microservice *Microservice) validate() error {
+
+	_, err := govalidator.ValidateStruct(microservice)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
