@@ -13,14 +13,15 @@ type microserviceUseCase struct {
 	microserviceRepository repository.MicroserviceRepositoryInterface
 }
 
-
 func NewMicroserviceUseCase(repository repository.MicroserviceRepositoryInterface) MicroserviceUseCaseInterface {
 	return &microserviceUseCase{repository}
 }
 
-
 func (usecase *microserviceUseCase) CreateMicroService(microservice *entities.Microservice) (*entities.Microservice, error) {
-	microservices, err := usecase.microserviceRepository.InsertMicroservice(microservice)
+
+	data := entities.NewMicroservice(microservice.Name, microservice.Username, microservice.Password)
+
+	microservices, err := usecase.microserviceRepository.InsertMicroservice(data)
 
 	if err != nil {
 		return nil, err
