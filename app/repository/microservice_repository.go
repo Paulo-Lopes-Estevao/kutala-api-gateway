@@ -6,16 +6,20 @@ import (
 )
 
 type MicroserviceRepositoryInterface interface {
-	InsertMicroservice(microservice entities.Microservice) (*entities.Microservice, error)
-	FindMicroservice(name string, username string, password string) (bool, error)
+	InsertMicroservice(microservice *entities.Microservice) (*entities.Microservice, error)
+	//FindMicroservice(name string, username string, password string) (bool, error)
 }
 
-type MicroserviceRepository struct {
-	Db *gorm.DB
+type microserviceRepository struct {
+	db *gorm.DB
 }
 
-func (repository MicroserviceRepository) InsertMicroservice(microservice *entities.Microservice) (*entities.Microservice, error) {
-	err := repository.Db.Table("microservice").Create(microservice).Error
+func NewMicroserviceRepository(db *gorm.DB) MicroserviceRepositoryInterface {
+	return &microserviceRepository{db}
+}
+
+func (repository *microserviceRepository) InsertMicroservice(microservice *entities.Microservice) (*entities.Microservice, error) {
+	err := repository.db.Table("microservice").Create(microservice).Error
 
 	if err != nil {
 		return nil, err
