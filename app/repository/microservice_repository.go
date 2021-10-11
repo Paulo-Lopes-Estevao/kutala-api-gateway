@@ -7,7 +7,7 @@ import (
 
 type MicroserviceRepositoryInterface interface {
 	InsertMicroservice(microservice *entities.Microservice) (*entities.Microservice, error)
-	//FindMicroservice(name string, username string, password string) (bool, error)
+	FindUsernameMicroservice(username string, microservice *entities.Microservice) (*entities.Microservice, error)
 }
 
 type microserviceRepository struct {
@@ -26,4 +26,15 @@ func (repository *microserviceRepository) InsertMicroservice(microservice *entit
 	}
 
 	return microservice, nil
+}
+
+func (repository *microserviceRepository) FindUsernameMicroservice(username string, microservice *entities.Microservice) (*entities.Microservice, error) {
+	err := repository.db.Table("microservice").Find(microservice, "username = ?", username).Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	return microservice, nil
+
 }
