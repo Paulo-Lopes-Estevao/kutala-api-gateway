@@ -1,4 +1,4 @@
-#  Kutalau
+#  Kutala
 
 ## Kutala API **GATEWAY**
 
@@ -14,6 +14,9 @@
 ### Monitoramento
 - Prometheus
 - Grafana
+
+### Cache
+- Redis
 
 
 
