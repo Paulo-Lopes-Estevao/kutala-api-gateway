@@ -10,6 +10,7 @@ import (
 type MicroserviceUseCaseInterface interface {
 	CreateMicroService(microservice *entities.Microservice) (*entities.Microservice, error)
 	Auth(username string, password string, microservice *entities.Microservice) (*entities.Microservice, error)
+	SearchUuid(uuid string, microservice *entities.Microservice) (*entities.Microservice, error)
 }
 
 type microserviceUseCase struct {
@@ -22,7 +23,11 @@ func NewMicroserviceUseCase(repository repository.MicroserviceRepositoryInterfac
 
 func (usecase *microserviceUseCase) CreateMicroService(microservice *entities.Microservice) (*entities.Microservice, error) {
 
-	data, _ := entities.NewMicroservice(microservice.Name, microservice.Username, microservice.Password)
+	data, err := entities.NewMicroservice(microservice.Name, microservice.Username, microservice.Password)
+
+	if err != nil {
+		return nil, err
+	}
 
 	microservices, err := usecase.microserviceRepository.InsertMicroservice(data)
 
@@ -45,4 +50,14 @@ func (usecase *microserviceUseCase) Auth(username string, password string, micro
 	}
 
 	return nil, fmt.Errorf("The password is invalid for the username")
+}
+
+func (usecase *microserviceUseCase) SearchUuid(uuid string, microservice *entities.Microservice) (*entities.Microservice, error) {
+	data, err := usecase.microserviceRepository.FindIdMicroservice(uuid, microservice)
+
+	if err != nil {
+		return nil, fmt.Errorf("Id is invalid")
+	}
+
+	return data, nil
 }
