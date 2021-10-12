@@ -10,8 +10,6 @@ import (
 
 type MicroserviceControllerInterface interface {
 	AddMicroservice(c Context) error
-	AuthBasicMicroservice(username, password string, c Context) (*entities.Microservice, error)
-	FindByUuidMicroservice(c Context) error
 }
 
 type microserviceController struct {
@@ -38,27 +36,4 @@ func (usecasecontroller *microserviceController) AddMicroservice(ctx Context) er
 	}
 
 	return ctx.JSON(http.StatusCreated, ResponseData{"data": microservices})
-}
-
-func (usecasecontroller *microserviceController) AuthBasicMicroservice(username, password string, ctx Context) (*entities.Microservice, error) {
-
-	microservices, err := usecasecontroller.microserviceUseCase.Auth(username, password, &microservice)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return microservices, nil
-}
-
-func (usecasecontroller *microserviceController) FindByUuidMicroservice(ctx Context) error {
-	id := ctx.Param("id")
-
-	microservices, err := usecasecontroller.microserviceUseCase.SearchUuid(id, &microservice)
-
-	if !errors.Is(err, nil) {
-		return ctx.JSON(http.StatusNotFound, ResponseData{"error": err.Error()})
-	}
-
-	return ctx.JSON(http.StatusOK, ResponseData{"data": microservices})
 }
