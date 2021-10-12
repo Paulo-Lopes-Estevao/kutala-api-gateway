@@ -15,6 +15,9 @@
 - Prometheus
 - Grafana
 
+### Cache
+- Redis
+
 
 
 
