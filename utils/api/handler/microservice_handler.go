@@ -7,17 +7,10 @@ import (
 
 func PrivateRouteMicroserviceHandler(e *echo.Echo, c controller.AppController) *echo.Echo {
 
-	e.GET("/microservice/:id", func(context echo.Context) error { return c.Microservice.FindByUuidMicroservice(context) })
-
-	return e
-
-}
-
-
-func PublicRouteMicroserviceHandler(e *echo.Echo, c controller.AppController) *echo.Echo {
-
 	e.POST("/microservice", func(context echo.Context) error { return c.Microservice.AddMicroservice(context) })
 
 	return e
 
 }
+
+func PublicRouteMicroserviceHandler(e *echo.Echo, c controller.AppController) *echo.Echo
