@@ -15,5 +15,4 @@ func TestNewMicroservice(t *testing.T) {
 	_, err := entities.NewMicroservice(faker.Name(), "demo", "demo")
 	require.Error(t, err)
 
-	bol := entities.
 }
