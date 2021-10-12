@@ -4,43 +4,60 @@ import (
 	"time"
 
 	"github.com/asaskevich/govalidator"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type Service struct {
-	Id              string `json:"id"`
-	Scheme          string `json:"scheme"`
-	Host            string `json:"host"`
-	Path            string `json:"path"`
-	Header          string `json:"header"`
-	Method          string `json:"method"`
-	Id_microservice Microservice
-	State           bool      `json:"state"`
-	Created         time.Time `json:"created"`
-	Updated         time.Time `json:"updated"`
+	Id       string    `json:"id"`
+	Name     string    `json:"name"`
+	Username string    `json:"username"`
+	Password string    `json:"password"`
+	State    bool      `json:"state"`
+	Created  time.Time `json:"created"`
+	Updated  time.Time `json:"updated"`
 }
 
-func NewService(scheme string, host string, path string, header string, method string, id_microservice Microservice) (*Service, error) {
-
+func NewService(name string, username string, password string) (*Service, error) {
 	service := &Service{
-		Scheme:          scheme,
-		Host:            host,
-		Path:            path,
-		Header:          header,
-		Method:          method,
-		Id_microservice: id_microservice,
-		State:           true,
-		Created:         time.Now(),
-		Updated:         time.Now(),
+		Name:     name,
+		Username: username,
+		Password: password,
+		State:    true,
+		Created:  time.Now(),
+		Updated:  time.Now(),
 	}
 
-	err := service.validate()
+	err := service.passwordEncrypt()
 
 	if err != nil {
 		return nil, err
 	}
 
 	return service, nil
+}
 
+func (service *Service) passwordEncrypt() error {
+	password, err := bcrypt.GenerateFromPassword([]byte(service.Password), bcrypt.DefaultCost)
+
+	if err != nil {
+		return err
+	}
+
+	service.Password = string(password)
+
+	err = service.validate()
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+
+}
+
+func (service *Service) VerifyPassword(password string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(service.Password), []byte(password))
+	return err == nil
 }
 
 func (service *Service) validate() error {
