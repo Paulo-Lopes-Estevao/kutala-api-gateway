@@ -1,6 +1,6 @@
-# NzimbuPay
+#  Kutalau
 
-## NZIMBUPAY API **GATEWAY**
+## Kutala API **GATEWAY**
 
 ### Autenticação
 - Basic Auth
