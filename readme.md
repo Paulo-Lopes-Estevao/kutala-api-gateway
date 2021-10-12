@@ -1,6 +1,6 @@
 #  Kutala
 
-## Kutala API **GATEWAY**
+## KUTALA API **GATEWAY**
 
 ### Autenticação
 - Basic Auth
