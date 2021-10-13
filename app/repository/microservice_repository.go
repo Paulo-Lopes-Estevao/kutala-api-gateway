@@ -8,7 +8,7 @@ import (
 type MicroserviceRepositoryInterface interface {
 	InsertMicroservice(microservice *entities.Microservice) (*entities.Microservice, error)
 	FindUsernameMicroservice(username string, microservice *entities.Microservice) (*entities.Microservice, error)
-	FindIdMicroservice(id string, microservice *entities.Microservice) (*entities.Microservice, error)
+	FindPathMicroservice(id string, microservice *entities.Microservice) (*entities.Microservice, error)
 }
 
 type microserviceRepository struct {
@@ -40,8 +40,9 @@ func (repository *microserviceRepository) FindUsernameMicroservice(username stri
 
 }
 
-func (repository *microserviceRepository) FindIdMicroservice(id string, microservice *entities.Microservice) (*entities.Microservice, error) {
-	err := repository.db.Table("microservice").Find(microservice, "id = ?", id).Error
+
+func (repository *microserviceRepository) FindPathMicroservice(path string, microservice *entities.Microservice) (*entities.Microservice, error) {
+	err := repository.db.Table("microservice").Find(microservice, "path = ?", path).Error
 
 	if err != nil {
 		return nil, err
