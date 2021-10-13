@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  db:
+   image: postgres:9.4
+   container_name: kutala-postgres
+   restart: always
+   tty: true
+   volumes:
+     - .utils/database/postgres/pgdata:/var/lib/postgresql/data
+   environment:
+     - POSTGRES_DB=postgres
+     - POSTGRES_USER=postgres
+     - POSTGRES_PASSWORD=postgres
+   ports:
+     - "5432:5432"
