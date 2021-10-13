@@ -5,9 +5,9 @@ import (
 	"github.com/labstack/echo"
 )
 
-func PrivateRouteServiceHandler(e *echo.Echo, c controller.AppController) *echo.Echo
 
-func PublicRouteServiceHandler(e *echo.Echo, c controller.AppController) *echo.Echo {
+
+func RouteServiceHandler(e *echo.Echo, c controller.AppController) *echo.Echo {
 
 	e.POST("/service", func(context echo.Context) error { return c.Service.AddService(context) })
 	e.GET("/service/:id", func(context echo.Context) error { return c.Service.FindByUuidService(context) })
