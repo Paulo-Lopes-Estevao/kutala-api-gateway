@@ -74,10 +74,10 @@ func main() {
 	db := database.ConnectionDB()
 	i := injection.NewRegistry(db)
 
-	handler.PublicRouteMicroserviceHandler(public_server, i.NewAppController())
+	handler.RouteServiceHandler(public_server, i.NewAppController())
 
 	middleware.RegistryMiddleware(private_server, i.NewAppController())
-	handler.PrivateRouteMicroserviceHandler(private_server, i.NewAppController())
+	handler.RouteMicroserviceHandler(private_server, i.NewAppController())
 
 	go func() {
 		fmt.Println("Running Server A")
