@@ -7,7 +7,7 @@ services:
    restart: always
    tty: true
    volumes:
-     - .utils/database/postgres/pgdata:/var/lib/postgresql/data
+     - ./utils/database/postgresql/.pgdata:/var/lib/postgresql/data
    environment:
      - POSTGRES_DB=postgres
      - POSTGRES_USER=postgres
