@@ -13,4 +13,3 @@ func RouteMicroserviceHandler(e *echo.Echo, c controller.AppController) *echo.Ec
 
 }
 
-//func PublicRouteMicroserviceHandler(e *echo.Echo, c controller.AppController) *echo.Echo
