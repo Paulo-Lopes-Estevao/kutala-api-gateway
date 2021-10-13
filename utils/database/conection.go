@@ -5,10 +5,10 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
-const DB_USERNAME = "snirdb"
-const DB_PASSWORD = "snirdb@2021"
-const DB_NAME = "nzimbupaygateway"
-const DB_HOST = "172.16.16.36"
+const DB_USERNAME = "postgres"
+const DB_PASSWORD = "postgres"
+const DB_NAME = "kutalagateway"
+const DB_HOST = "localhost"
 const DB_PORT = "5432"
 
 func ConnectionDB() *gorm.DB {
