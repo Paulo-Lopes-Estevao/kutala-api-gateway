@@ -19,7 +19,7 @@ func NewMicroserviceUseCase(repository repository.MicroserviceRepositoryInterfac
 
 func (usecase *microserviceUseCase) CreateMicroService(microservice *entities.Microservice) (*entities.Microservice, error) {
 
-	data, err := entities.NewMicroservice(microservice.Scheme, microservice.Host, microservice.Path, microservice.Header, microservice.Method, microservice.Id_microservice)
+	data, err := entities.NewMicroservice(microservice.Api, microservice.Method, microservice.Id_service)
 
 	if err != nil {
 		return nil, err
