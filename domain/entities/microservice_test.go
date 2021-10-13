@@ -12,7 +12,7 @@ import (
 
 func TestNewMicroservice(t *testing.T) {
 	t.Parallel()
-	_, err := entities.NewMicroservice(faker.URL(), "POST", "111")
+	_, err := entities.NewMicroservice(faker.URL(), "/africa", "POST", "111")
 	require.Error(t, err)
 
 }
