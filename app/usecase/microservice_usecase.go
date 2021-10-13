@@ -1,12 +1,15 @@
 package usecase
 
 import (
+	"fmt"
+
 	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/app/repository"
 	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/domain/entities"
 )
 
 type MicroserviceUseCaseInterface interface {
 	CreateMicroService(microservice *entities.Microservice) (*entities.Microservice, error)
+	SearchPathService(uuid string, microservice *entities.Microservice) (*entities.Microservice, error)
 }
 
 type microserviceUseCase struct {
@@ -32,4 +35,14 @@ func (usecase *microserviceUseCase) CreateMicroService(microservice *entities.Mi
 	}
 
 	return microservices, nil
+}
+
+func (usecase *microserviceUseCase) SearchPathService(path string, microservice *entities.Microservice) (*entities.Microservice, error) {
+	data, err := usecase.microserviceRepository.FindPathMicroservice(path, microservice)
+
+	if err != nil {
+		return nil, fmt.Errorf("path is invalid")
+	}
+
+	return data, nil
 }
