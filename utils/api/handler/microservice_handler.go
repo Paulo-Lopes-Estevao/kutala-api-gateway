@@ -5,7 +5,7 @@ import (
 	"github.com/labstack/echo"
 )
 
-func PrivateRouteMicroserviceHandler(e *echo.Echo, c controller.AppController) *echo.Echo {
+func RouteMicroserviceHandler(e *echo.Echo, c controller.AppController) *echo.Echo {
 
 	e.POST("/microservice", func(context echo.Context) error { return c.Microservice.AddMicroservice(context) })
 
@@ -13,4 +13,4 @@ func PrivateRouteMicroserviceHandler(e *echo.Echo, c controller.AppController) *
 
 }
 
-func PublicRouteMicroserviceHandler(e *echo.Echo, c controller.AppController) *echo.Echo
+//func PublicRouteMicroserviceHandler(e *echo.Echo, c controller.AppController) *echo.Echo
