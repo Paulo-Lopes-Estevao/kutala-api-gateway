@@ -13,7 +13,7 @@ import (
 
 type ServiceControllerInterface interface {
 	AddService(w http.ResponseWriter, r *http.Request)
-	//AuthBasicService(username, password string, c Context) (*entities.Service, error)
+	AuthBasicService(username, password string) (*entities.Service, error)
 	FindByUuidService(w http.ResponseWriter, r *http.Request)
 }
 
@@ -47,6 +47,17 @@ func (usecasecontroller *serviceController) AddService(w http.ResponseWriter, r 
 	value, _ := json.Marshal(resp)
 
 	w.Write(value)
+}
+
+func (usecasecontroller *serviceController) AuthBasicService(username, password string) (*entities.Service, error) {
+
+	services, err := usecasecontroller.serviceUseCase.Auth(username, password, &service)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return services, nil
 }
 
 func (usecasecontroller *serviceController) FindByUuidService(w http.ResponseWriter, r *http.Request) {
