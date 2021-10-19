@@ -1,17 +1,20 @@
 package controller
 
 import (
+	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/app/usecase"
 	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/domain/entities"
+	"github.com/gorilla/mux"
 )
 
 type ServiceControllerInterface interface {
-	AddService(c Context) error
-	AuthBasicService(username, password string, c Context) (*entities.Service, error)
-	FindByUuidService(c Context) error
+	AddService(w http.ResponseWriter, r *http.Request)
+	//AuthBasicService(username, password string, c Context) (*entities.Service, error)
+	FindByUuidService(w http.ResponseWriter, r *http.Request)
 }
 
 type serviceController struct {
@@ -24,41 +27,46 @@ func NewServiceController(usecases usecase.ServiceUseCaseInterface) ServiceContr
 
 var service entities.Service
 
-func (usecasecontroller *serviceController) AddService(ctx Context) error {
+func (usecasecontroller *serviceController) AddService(w http.ResponseWriter, r *http.Request) {
 
-	if err := ctx.Bind(&service); !errors.Is(err, nil) {
-
-		return ctx.JSON(http.StatusBadRequest, ResponseData{"error": err.Error()})
-	}
+	w.WriteHeader(http.StatusCreated)
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewDecoder(r.Body).Decode(&service)
 
 	services, err := usecasecontroller.serviceUseCase.CreateService(&service)
 
-	if !errors.Is(err, nil) {
-		return ctx.JSON(http.StatusBadRequest, ResponseData{"error": err.Error()})
-	}
-
-	return ctx.JSON(http.StatusCreated, ResponseData{"data": services})
-}
-
-func (usecasecontroller *serviceController) AuthBasicService(username, password string, ctx Context) (*entities.Service, error) {
-
-	services, err := usecasecontroller.serviceUseCase.Auth(username, password, &service)
-
 	if err != nil {
-		return nil, err
+		fmt.Fprint(w, err)
 	}
 
-	return services, nil
+	resp := make(map[string]interface{})
+	resp["message"] = "Status Created"
+	resp["data"] = services
+	resp["status"] = http.StatusCreated
+
+	value, _ := json.Marshal(resp)
+
+	w.Write(value)
 }
 
-func (usecasecontroller *serviceController) FindByUuidService(ctx Context) error {
-	id := ctx.Param("id")
+func (usecasecontroller *serviceController) FindByUuidService(w http.ResponseWriter, r *http.Request) {
+	id := mux.Vars(r)
 
-	services, err := usecasecontroller.serviceUseCase.SearchUuid(id, &service)
+	w.WriteHeader(http.StatusOK)
+
+	services, err := usecasecontroller.serviceUseCase.SearchUuid(id["id"], &service)
 
 	if !errors.Is(err, nil) {
-		return ctx.JSON(http.StatusNotFound, ResponseData{"error": err.Error()})
+		fmt.Fprint(w, err)
 	}
 
-	return ctx.JSON(http.StatusOK, ResponseData{"data": services})
+	resp := make(map[string]interface{})
+	resp["message"] = "Service Found"
+	resp["data"] = services
+	resp["status"] = http.StatusOK
+
+	value, _ := json.Marshal(resp)
+
+	w.Write(value)
+
 }
