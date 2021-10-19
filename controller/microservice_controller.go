@@ -10,6 +10,7 @@ import (
 
 type MicroserviceControllerInterface interface {
 	AddMicroservice(c Context) error
+	//ProxyMicroservice(ctx Context) error
 }
 
 type microserviceController struct {
@@ -21,6 +22,11 @@ func NewMicroserviceController(usecases usecase.MicroserviceUseCaseInterface) Mi
 }
 
 var microservice entities.Microservice
+
+func target(path string) (string, error) {
+	parts := path
+	return parts, nil
+}
 
 func (usecasecontroller *microserviceController) AddMicroservice(ctx Context) error {
 
@@ -37,3 +43,30 @@ func (usecasecontroller *microserviceController) AddMicroservice(ctx Context) er
 
 	return ctx.JSON(http.StatusCreated, ResponseData{"data": microservices})
 }
+
+func verifyPathMicroService(pathmicroservice string, usecasecontroller *microserviceController) (string, error) {
+
+	path, _ := target(pathmicroservice)
+
+	_, err := usecasecontroller.microserviceUseCase.SearchPathService(path, &microservice)
+
+	if err != nil {
+		return path, err
+	}
+
+	return path, nil
+}
+
+/* func (usecasecontroller *microserviceController) ProxyMicroservice(path string) (string, error) {
+
+	pathmicroservice, _ := verifyPathMicroService(path, usecasecontroller)
+
+	microservices, err := usecasecontroller.microserviceUseCase.SearchPathService(pathmicroservice, &microservice)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return microservices.Api, nil
+
+} */
