@@ -1,31 +1,37 @@
 package middleware
 
 import (
-	"crypto/subtle"
+	"net/http"
 
 	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/controller"
-	"github.com/labstack/echo"
-	"github.com/labstack/echo/middleware"
 )
 
-func RegistryMiddleware(e *echo.Echo, c controller.AppController) *echo.Echo {
+func RegistryMiddlewareBasicAuth(next http.HandlerFunc, c controller.AppController) http.HandlerFunc {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
-	e.Use(middleware.Logger())
-	e.Use(middleware.Recover())
+		username, password, ok := r.BasicAuth()
+		if !ok {
+			http.Error(w, "Unauthorized.", http.StatusUnauthorized)
+			return
+		}
 
-	e.Use(middleware.BasicAuth(func(username, password string, context echo.Context) (bool, error) {
+		services, err := c.Service.AuthBasicService(username, password)
 
-		services, _ := c.Service.AuthBasicService(username, password, context)
+		if err != nil {
+			http.Error(w, "Unauthorized.", http.StatusUnauthorized)
+			return
+		}
 
 		result := services.VerifyPassword(password)
 
-		if subtle.ConstantTimeCompare([]byte(username), []byte(services.Username)) == 1 && result {
-			return true, nil
+		isValid := (username == services.Username) && result
+		if !isValid {
+			http.Error(w, "Unauthorized.", http.StatusUnauthorized)
+			return
 		}
-		return false, nil
 
-	}))
+		next.ServeHTTP(w, r)
 
-	return e
+	})
 
 }
