@@ -9,7 +9,7 @@ import (
 
 type MicroserviceUseCaseInterface interface {
 	CreateMicroService(microservice *entities.Microservice) (*entities.Microservice, error)
-	SearchPathService(uuid string, microservice *entities.Microservice) (*entities.Microservice, error)
+	SearchPathService(path string, microservice *entities.Microservice) (*entities.Microservice, error)
 }
 
 type microserviceUseCase struct {
