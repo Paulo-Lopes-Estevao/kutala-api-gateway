@@ -14,3 +14,13 @@ services:
      - POSTGRES_PASSWORD=postgres
    ports:
      - "5432:5432"
+
+  nginx:
+    image: nginx
+    container_name: kutala-nginx
+    restart: always
+    volumes:
+      - ./utils/services/nginx/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 80:80
+      - 443:443
