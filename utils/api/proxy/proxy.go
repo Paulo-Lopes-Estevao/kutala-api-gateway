@@ -16,11 +16,6 @@ func proxy(remote *url.URL) *httputil.ReverseProxy {
 		req.URL.Host = remote.Host
 	}
 
-	proxy.ModifyResponse = func(response *http.Response) error {
-
-		return nil
-	}
-
 	return proxy
 }
 
@@ -36,11 +31,14 @@ func getProxyUrl(api string) (*url.URL, error) {
 }
 
 func ReverseProxy() *httputil.ReverseProxy {
+	url, _ := getProxyUrl("http://127.0.0.1:9999")
+	return proxy(url)
+}
 
-	url1, _ := getProxyUrl("http://127.0.0.1:2000")
-
-	return proxy(url1)
-
+func Handler(p *httputil.ReverseProxy) func(http.ResponseWriter, *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		p.ServeHTTP(w, r)
+	}
 }
 
 /* func NewPeopleHandler() http.Handler {
