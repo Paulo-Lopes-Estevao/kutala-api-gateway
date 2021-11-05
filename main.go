@@ -20,6 +20,8 @@ func main() {
 	db := database.ConnectionDB()
 	i := injection.NewRegistry(db)
 
+	handler.RouteMicroserviceHandler(public_server, i.NewAppController())
+
 	handler.RouteServiceHandler(public_server, i.NewAppController())
 
 	//middleware.RegistryMiddleware(private_server, i.NewAppController())
@@ -33,8 +35,8 @@ func main() {
 	   	}()
 	*/
 	fmt.Println("Running Server B")
-	fmt.Println("Server started at port 8081")
-	err := http.ListenAndServe(":8081", public_server)
+	fmt.Println("Server started at port 9990")
+	err := http.ListenAndServe(":9990", public_server)
 
 	if err != nil {
 		log.Println("Not Running Server...", err.Error())
