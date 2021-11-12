@@ -5,6 +5,8 @@ services:
    image: postgres:9.4
    container_name: kutala-postgres
    restart: always
+   deploy:
+      replicas: 3
    tty: true
    volumes:
      - ./utils/database/postgresql/.pgdata:/var/lib/postgresql/data
@@ -14,13 +16,31 @@ services:
      - POSTGRES_PASSWORD=postgres
    ports:
      - "5432:5432"
+   networks:
+      - postgres
 
-  nginx:
-    image: nginx
-    container_name: kutala-nginx
+  
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: kutala-pgadmin
     restart: always
+    deploy:
+      replicas: 3
+    tty: true
     volumes:
-      - ./utils/services/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./utils/database/postgresql/.pgadmin:/var/lib/pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=pl1745240@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=123456
     ports:
-      - 80:80
-      - 443:443
+      - "8000:80"
+    networks:
+      - postgres
+
+networks:
+  postgres:
+    driver: bridge
+
+volumes:
+  kutala-postgres:
+  kutala-pgadmin:
