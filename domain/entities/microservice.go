@@ -8,6 +8,8 @@ import (
 
 type Microservice struct {
 	Id        string    `json:"id"`
+	Name      string    `json:"name"`
+	Version   string    `json:"version"`
 	Api       string    `json:"api"`
 	Path      string    `json:"path"`
 	Method    string    `json:"method"`
