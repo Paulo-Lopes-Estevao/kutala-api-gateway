@@ -7,7 +7,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-type Service struct {
+type User struct {
 	Id       string    `json:"id"`
 	Name     string    `json:"name"`
 	Username string    `json:"username"`
@@ -17,8 +17,8 @@ type Service struct {
 	Updated  time.Time `json:"updated"`
 }
 
-func NewService(name string, username string, password string) (*Service, error) {
-	service := &Service{
+func NewUser(name string, username string, password string) (*User, error) {
+	User := &User{
 		Name:     name,
 		Username: username,
 		Password: password,
@@ -27,25 +27,25 @@ func NewService(name string, username string, password string) (*Service, error)
 		Updated:  time.Now(),
 	}
 
-	err := service.passwordEncrypt()
+	err := User.passwordEncrypt()
 
 	if err != nil {
 		return nil, err
 	}
 
-	return service, nil
+	return User, nil
 }
 
-func (service *Service) passwordEncrypt() error {
-	password, err := bcrypt.GenerateFromPassword([]byte(service.Password), bcrypt.DefaultCost)
+func (User *User) passwordEncrypt() error {
+	password, err := bcrypt.GenerateFromPassword([]byte(User.Password), bcrypt.DefaultCost)
 
 	if err != nil {
 		return err
 	}
 
-	service.Password = string(password)
+	User.Password = string(password)
 
-	err = service.validate()
+	err = User.validate()
 
 	if err != nil {
 		return err
@@ -55,14 +55,14 @@ func (service *Service) passwordEncrypt() error {
 
 }
 
-func (service *Service) VerifyPassword(password string) bool {
-	err := bcrypt.CompareHashAndPassword([]byte(service.Password), []byte(password))
+func (User *User) VerifyPassword(password string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(User.Password), []byte(password))
 	return err == nil
 }
 
-func (service *Service) validate() error {
+func (User *User) validate() error {
 
-	_, err := govalidator.ValidateStruct(service)
+	_, err := govalidator.ValidateStruct(User)
 
 	if err != nil {
 		return err

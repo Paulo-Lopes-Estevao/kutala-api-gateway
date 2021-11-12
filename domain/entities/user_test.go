@@ -8,9 +8,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestNewService(t *testing.T) {
+func TestNewUser(t *testing.T) {
 	t.Parallel()
-	_, err := entities.NewService(faker.Name(), "demo", "demo")
+	_, err := entities.NewUser(faker.Name(), "demo", "demo")
 	require.Error(t, err)
 
 }

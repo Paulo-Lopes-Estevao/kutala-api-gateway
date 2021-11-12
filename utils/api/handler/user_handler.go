@@ -7,8 +7,8 @@ import (
 
 func RouteServiceHandler(e *mux.Router, c controller.AppController) *mux.Router {
 
-	e.HandleFunc("/service", c.Service.AddService).Methods("POST")
-	e.HandleFunc("/service/{id}", c.Service.FindByUuidService).Methods("GET")
+	e.HandleFunc("/User", c.User.AddUser).Methods("POST")
+	e.HandleFunc("/User/{id}", c.User.FindByUuidUser).Methods("GET")
 
 	return e
 
