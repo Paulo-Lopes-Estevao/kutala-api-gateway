@@ -25,7 +25,7 @@ func (repository *serviceRepository) InsertUser(User *entities.User) (*entities.
 }
 
 func (repository *serviceRepository) FindUsernameService(username string, User *entities.User) (*entities.User, error) {
-	err := repository.db.Table("User").Find(User, "username = ?", username).Error
+	err := repository.db.Table("users").Find(User, "username = ?", username).Error
 
 	if err != nil {
 		return nil, err
@@ -36,7 +36,7 @@ func (repository *serviceRepository) FindUsernameService(username string, User *
 }
 
 func (repository *serviceRepository) FindIdUser(id string, User *entities.User) (*entities.User, error) {
-	err := repository.db.Table("User").Find(User, "id = ?", id).Error
+	err := repository.db.Table("users").Find(User, "id = ?", id).Error
 
 	if err != nil {
 		return nil, err

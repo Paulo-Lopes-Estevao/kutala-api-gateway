@@ -15,7 +15,7 @@ func NewMicroserviceRepository(db *gorm.DB) repository.MicroserviceRepositoryInt
 }
 
 func (repository *microserviceRepository) InsertMicroservice(microservice *entities.Microservice) (*entities.Microservice, error) {
-	err := repository.db.Table("microservice").Create(microservice).Error
+	err := repository.db.Table("microservices").Create(microservice).Error
 
 	if err != nil {
 		return nil, err
@@ -25,7 +25,7 @@ func (repository *microserviceRepository) InsertMicroservice(microservice *entit
 }
 
 func (repository *microserviceRepository) FindUsernameMicroservice(username string, microservice *entities.Microservice) (*entities.Microservice, error) {
-	err := repository.db.Table("microservice").Find(microservice, "username = ?", username).Error
+	err := repository.db.Table("microservices").Find(microservice, "username = ?", username).Error
 
 	if err != nil {
 		return nil, err
@@ -36,7 +36,7 @@ func (repository *microserviceRepository) FindUsernameMicroservice(username stri
 }
 
 func (repository *microserviceRepository) FindPathMicroservice(path string, microservice *entities.Microservice) (*entities.Microservice, error) {
-	err := repository.db.Table("microservice").Find(microservice, "path = ?", path).Error
+	err := repository.db.Table("microservices").Find(microservice, "path = ?", path).Error
 
 	if err != nil {
 		return nil, err

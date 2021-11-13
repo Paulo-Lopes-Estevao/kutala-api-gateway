@@ -2,14 +2,12 @@ package handler
 
 import (
 	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/interface/controller"
-	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/utils/api/proxy"
-	"github.com/gorilla/mux"
+	"github.com/labstack/echo"
 )
 
-func RouteMicroserviceHandler(e *mux.Router, c controller.AppController) *mux.Router {
+func RouteMicroserviceHandler(e *echo.Echo, c controller.AppController) *echo.Echo {
 
-	e.HandleFunc("/microservice", c.Microservice.AddMicroservice).Methods("POST")
-	e.HandleFunc("/graphql", proxy.Handler(proxy.ReverseProxy())).Methods("GET")
+	e.POST("/microservice/:id", func(context echo.Context) error { return c.Microservice.AddMicroservice(context) })
 
 	return e
 
