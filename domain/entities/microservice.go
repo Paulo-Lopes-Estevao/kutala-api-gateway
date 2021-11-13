@@ -7,29 +7,29 @@ import (
 )
 
 type Microservice struct {
-	Id        string    `json:"id"`
-	Name      string    `json:"name"`
-	Version   string    `json:"version"`
-	Api       string    `json:"api"`
-	Path      string    `json:"path"`
-	Method    string    `json:"method"`
-	Idservice string    `json:"idservice"`
-	Service   []Service `json:"service"`
-	State     bool      `json:"state"`
-	Created   time.Time `json:"created"`
-	Updated   time.Time `json:"updated"`
+	Id      string    `json:"id"`
+	Name    string    `json:"name"`
+	Version string    `json:"version"`
+	Api     string    `json:"api"`
+	Path    string    `json:"path"`
+	Method  string    `json:"method"`
+	Iduser  string    `json:"iduser"`
+	User    []User    `json:"user"`
+	State   bool      `json:"state"`
+	Created time.Time `json:"created"`
+	Updated time.Time `json:"updated"`
 }
 
-func NewMicroservice(api string, path string, method string, idservice string) (*Microservice, error) {
+func NewMicroservice(api string, path string, method string, iduser string) (*Microservice, error) {
 
 	microservice := &Microservice{
-		Api:       api,
-		Path:      path,
-		Method:    method,
-		Idservice: idservice,
-		State:     true,
-		Created:   time.Now(),
-		Updated:   time.Now(),
+		Api:     api,
+		Path:    path,
+		Method:  method,
+		Iduser:  iduser,
+		State:   true,
+		Created: time.Now(),
+		Updated: time.Now(),
 	}
 
 	err := microservice.validate()
