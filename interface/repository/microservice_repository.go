@@ -2,20 +2,15 @@ package repository
 
 import (
 	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/domain/entities"
+	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/usecase/repository"
 	"github.com/jinzhu/gorm"
 )
-
-type MicroserviceRepositoryInterface interface {
-	InsertMicroservice(microservice *entities.Microservice) (*entities.Microservice, error)
-	FindUsernameMicroservice(username string, microservice *entities.Microservice) (*entities.Microservice, error)
-	FindPathMicroservice(id string, microservice *entities.Microservice) (*entities.Microservice, error)
-}
 
 type microserviceRepository struct {
 	db *gorm.DB
 }
 
-func NewMicroserviceRepository(db *gorm.DB) MicroserviceRepositoryInterface {
+func NewMicroserviceRepository(db *gorm.DB) repository.MicroserviceRepositoryInterface {
 	return &microserviceRepository{db}
 }
 
@@ -39,7 +34,6 @@ func (repository *microserviceRepository) FindUsernameMicroservice(username stri
 	return microservice, nil
 
 }
-
 
 func (repository *microserviceRepository) FindPathMicroservice(path string, microservice *entities.Microservice) (*entities.Microservice, error) {
 	err := repository.db.Table("microservice").Find(microservice, "path = ?", path).Error

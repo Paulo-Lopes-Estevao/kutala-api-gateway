@@ -2,20 +2,15 @@ package repository
 
 import (
 	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/domain/entities"
+	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/usecase/repository"
 	"github.com/jinzhu/gorm"
 )
-
-type UserRepositoryInterface interface {
-	InsertUser(User *entities.User) (*entities.User, error)
-	FindUsernameService(username string, User *entities.User) (*entities.User, error)
-	FindIdUser(id string, User *entities.User) (*entities.User, error)
-}
 
 type serviceRepository struct {
 	db *gorm.DB
 }
 
-func NewUserRepository(db *gorm.DB) UserRepositoryInterface {
+func NewUserRepository(db *gorm.DB) repository.UserRepositoryInterface {
 	return &serviceRepository{db}
 }
 

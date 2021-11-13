@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/controller"
+	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/interface/controller"
 	"github.com/gorilla/mux"
 )
 

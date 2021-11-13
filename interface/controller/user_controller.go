@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/app/usecase"
 	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/domain/entities"
+	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/usecase/interactor"
 	"github.com/gorilla/mux"
 )
 
@@ -18,10 +18,10 @@ type UserControllerInterface interface {
 }
 
 type userController struct {
-	serviceUseCase usecase.UserUseCaseInterface
+	serviceUseCase interactor.UserUseCaseInterface
 }
 
-func NewUserController(usecases usecase.UserUseCaseInterface) UserControllerInterface {
+func NewUserController(usecases interactor.UserUseCaseInterface) UserControllerInterface {
 	return &userController{usecases}
 }
 

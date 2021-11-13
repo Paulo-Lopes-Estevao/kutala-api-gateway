@@ -1,6 +1,8 @@
 package repository
 
-import "github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/domain/entities"
+import (
+	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/domain/entities"
+)
 
 type MicroserviceRepositoryInterface interface {
 	InsertMicroservice(microservice *entities.Microservice) (*entities.Microservice, error)

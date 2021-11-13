@@ -3,7 +3,7 @@ package middleware
 import (
 	"net/http"
 
-	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/controller"
+	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/interface/controller"
 )
 
 func RegistryMiddlewareBasicAuth(next http.HandlerFunc, c controller.AppController) http.HandlerFunc {

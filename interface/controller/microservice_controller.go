@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/app/usecase"
 	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/domain/entities"
+	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/usecase/interactor"
 )
 
 type MicroserviceControllerInterface interface {
@@ -15,10 +15,10 @@ type MicroserviceControllerInterface interface {
 }
 
 type microserviceController struct {
-	microserviceUseCase usecase.MicroserviceUseCaseInterface
+	microserviceUseCase interactor.UserUseCaseInterface
 }
 
-func NewMicroserviceController(usecases usecase.MicroserviceUseCaseInterface) MicroserviceControllerInterface {
+func NewMicroserviceController(usecases interactor.UserUseCaseInterface) MicroserviceControllerInterface {
 	return &microserviceController{usecases}
 }
 
