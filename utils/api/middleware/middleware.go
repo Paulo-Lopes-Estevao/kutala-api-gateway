@@ -1,37 +1,31 @@
 package middleware
 
 import (
-	"net/http"
+	"crypto/subtle"
 
 	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/interface/controller"
+	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
 )
 
-func RegistryMiddlewareBasicAuth(next http.HandlerFunc, c controller.AppController) http.HandlerFunc {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+func RegistryMiddlewareBasicAuth(e *echo.Echo, c controller.AppController) *echo.Echo {
 
-		username, password, ok := r.BasicAuth()
-		if !ok {
-			http.Error(w, "Unauthorized.", http.StatusUnauthorized)
-			return
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
+
+	e.Use(middleware.BasicAuth(func(username, password string, context echo.Context) (bool, error) {
+
+		users, _ := c.User.AuthBasicUser(username, password, context)
+
+		result := users.VerifyPassword(password)
+
+		if subtle.ConstantTimeCompare([]byte(username), []byte(users.Username)) == 1 && result {
+			return true, nil
 		}
+		return false, nil
 
-		services, err := c.User.AuthBasicUser(username, password)
+	}))
 
-		if err != nil {
-			http.Error(w, "Unauthorized.", http.StatusUnauthorized)
-			return
-		}
-
-		result := services.VerifyPassword(password)
-
-		isValid := (username == services.Username) && result
-		if !isValid {
-			http.Error(w, "Unauthorized.", http.StatusUnauthorized)
-			return
-		}
-
-		next.ServeHTTP(w, r)
-
-	})
+	return e
 
 }
