@@ -2,13 +2,13 @@ package handler
 
 import (
 	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/interface/controller"
-	"github.com/gorilla/mux"
+	"github.com/labstack/echo"
 )
 
-func RouteServiceHandler(e *mux.Router, c controller.AppController) *mux.Router {
+func RouteUserHandler(e *echo.Echo, c controller.AppController) *echo.Echo {
 
-	e.HandleFunc("/User", c.User.AddUser).Methods("POST")
-	e.HandleFunc("/User/{id}", c.User.FindByUuidUser).Methods("GET")
+	e.POST("/user", func(context echo.Context) error { return c.User.AddUser(context) })
+	e.GET("/user/:id", func(context echo.Context) error { return c.User.FindByUuidUser(context) })
 
 	return e
 
