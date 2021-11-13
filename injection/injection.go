@@ -20,6 +20,6 @@ func NewRegistry(db *gorm.DB) InjectionInterface {
 func (i *injection) NewAppController() controller.AppController {
 	return controller.AppController{
 		Microservice: i.NewMicroserviceController(),
-		Service:      i.NewServiceController(),
+		User:         i.NewUserController(),
 	}
 }

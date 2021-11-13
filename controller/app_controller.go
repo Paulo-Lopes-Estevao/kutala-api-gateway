@@ -5,7 +5,7 @@ type AppController struct {
 		MicroserviceControllerInterface
 	}
 
-	Service interface {
-		ServiceControllerInterface
+	User interface {
+		UserControllerInterface
 	}
 }

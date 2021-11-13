@@ -6,7 +6,7 @@ import (
 	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/controller"
 )
 
-func (i *injection) NewUserController() controller.ServiceControllerInterface {
+func (i *injection) NewUserController() controller.UserControllerInterface {
 	return controller.NewUserController(i.NewUserUseCase())
 }
 

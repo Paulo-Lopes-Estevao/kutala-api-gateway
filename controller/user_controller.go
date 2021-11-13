@@ -11,7 +11,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-type ServiceControllerInterface interface {
+type UserControllerInterface interface {
 	AddUser(w http.ResponseWriter, r *http.Request)
 	AuthBasicUser(username, password string) (*entities.User, error)
 	FindByUuidUser(w http.ResponseWriter, r *http.Request)
@@ -21,7 +21,7 @@ type userController struct {
 	serviceUseCase usecase.UserUseCaseInterface
 }
 
-func NewUserController(usecases usecase.UserUseCaseInterface) ServiceControllerInterface {
+func NewUserController(usecases usecase.UserUseCaseInterface) UserControllerInterface {
 	return &userController{usecases}
 }
 

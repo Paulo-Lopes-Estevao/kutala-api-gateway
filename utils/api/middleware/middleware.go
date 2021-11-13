@@ -15,7 +15,7 @@ func RegistryMiddlewareBasicAuth(next http.HandlerFunc, c controller.AppControll
 			return
 		}
 
-		services, err := c.Service.AuthBasicService(username, password)
+		services, err := c.User.AuthBasicUser(username, password)
 
 		if err != nil {
 			http.Error(w, "Unauthorized.", http.StatusUnauthorized)
