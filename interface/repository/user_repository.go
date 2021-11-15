@@ -15,7 +15,7 @@ func NewUserRepository(db *gorm.DB) repository.UserRepositoryInterface {
 }
 
 func (repository *serviceRepository) InsertUser(User *entities.User) (*entities.User, error) {
-	err := repository.db.Table("User").Create(User).Error
+	err := repository.db.Table("users").Create(User).Error
 
 	if err != nil {
 		return nil, err
