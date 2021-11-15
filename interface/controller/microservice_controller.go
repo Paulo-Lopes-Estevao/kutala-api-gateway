@@ -1,17 +1,17 @@
 package controller
 
 import (
-	"encoding/json"
-	"fmt"
+	"errors"
 	"net/http"
 
 	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/domain/entities"
+	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/interface/presenter"
 	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/usecase/interactor"
 )
 
 type MicroserviceControllerInterface interface {
-	AddMicroservice(w http.ResponseWriter, r *http.Request)
-	//ProxyReverseMicroservice(w http.ResponseWriter, r *http.Request) *httputil.ReverseProxy
+	AddMicroservice(ctx Context) error
+	GetMicroservice(ctx Context) (*entities.Microservice, error)
 }
 
 type microserviceController struct {
@@ -24,55 +24,31 @@ func NewMicroserviceController(usecases interactor.UserUseCaseInterface) Microse
 
 var microservice entities.Microservice
 
-func target(path string) (string, error) {
-	parts := path
-	return parts, nil
-}
+func (usecasecontroller *microserviceController) AddMicroservice(ctx Context) error {
 
-func (usecasecontroller *microserviceController) AddMicroservice(w http.ResponseWriter, r *http.Request) {
-
-	w.WriteHeader(http.StatusCreated)
-
-	w.Header().Set("Content-Type", "application/json")
-	_ = json.NewDecoder(r.Body).Decode(&microservice)
+	if err := ctx.Bind(&microservice); !errors.Is(err, nil) {
+		ctx.JSON(http.StatusBadRequest, ResponseData{"error": err.Error()})
+	}
 
 	microservices, err := usecasecontroller.microserviceUseCase.CreateMicroService(&microservice)
 
-	if err != nil {
-		fmt.Fprint(w, err)
+	if !errors.Is(err, nil) {
+		return ctx.JSON(http.StatusBadRequest, ResponseData{"error": err.Error()})
 	}
 
-	resp := make(map[string]interface{})
-	resp["message"] = "Status Created"
-	resp["data"] = microservices
-	resp["status"] = http.StatusCreated
-
-	value, _ := json.Marshal(resp)
-
-	w.Write(value)
+	return ctx.JSON(http.StatusCreated, ResponseData{"data": microservices})
 
 }
 
-/* func verifyPathMicroService(pathmicroservice string, usecasecontroller *microserviceController) (string, error) {
+func (usecasecontroller *microserviceController) GetMicroservice(ctx Context) (*entities.Microservice, error) {
 
-	path, _ := target(pathmicroservice)
+	id, pathmicroservice := ctx.Param("id"), ctx.Param("name")
 
-	_, err := usecasecontroller.microserviceUseCase.SearchPathService(path, &microservice)
+	users, err := usecasecontroller.microserviceUseCase.SearchUuid(id, &user)
 
 	if err != nil {
-		return path, err
+		return nil, err
 	}
-
-	return path, nil
-} */
-
-/* func (usecasecontroller *microserviceController) ProxyReverseMicroservice(w http.ResponseWriter, r *http.Request) *httputil.ReverseProxy {
-
-	//microservicePath := mux.Vars(r)
-
-	//w.WriteHeader(http.StatusOK)
-
-	//pathmicroservice, _ := verifyPathMicroService(microservicePath["microservice"], usecasecontroller)
 
 	microservices, err := usecasecontroller.microserviceUseCase.SearchPathService(pathmicroservice, &microservice)
 
@@ -80,6 +56,6 @@ func (usecasecontroller *microserviceController) AddMicroservice(w http.Response
 		return nil, err
 	}
 
-	return microservices.Api, nil
+	return presenter.Response(microservices, users), nil
 
-} */
+}
