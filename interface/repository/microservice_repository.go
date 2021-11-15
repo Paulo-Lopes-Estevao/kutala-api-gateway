@@ -36,7 +36,7 @@ func (repository *microserviceRepository) FindUsernameMicroservice(username stri
 }
 
 func (repository *microserviceRepository) FindPathMicroservice(path string, microservice *entities.Microservice) (*entities.Microservice, error) {
-	err := repository.db.Table("microservices").Find(microservice, "path = ?", path).Error
+	err := repository.db.Table("microservices").Find(microservice, "name = ?", path).Error
 
 	if err != nil {
 		return nil, err
