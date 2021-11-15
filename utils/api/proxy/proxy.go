@@ -1,51 +1,79 @@
 package proxy
 
 import (
+	"bytes"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"io/ioutil"
 	"net/http"
-	"net/http/httputil"
-	"net/url"
+	"time"
+
+	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/domain/entities"
+	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/interface/controller"
+	"github.com/labstack/echo"
+	"github.com/labstack/gommon/log"
 )
 
-func proxy(remote *url.URL) *httputil.ReverseProxy {
+var values map[string]string
 
-	proxy := httputil.NewSingleHostReverseProxy(remote)
-
-	proxy.Director = func(req *http.Request) {
-		req.Host = remote.Host
-		req.URL.Scheme = remote.Scheme
-		req.URL.Host = remote.Host
-	}
-
-	return proxy
-}
-
-func getProxyUrl(api string) (*url.URL, error) {
-
-	remote, err := url.Parse(api)
-
+func ReverseProxy(ctx echo.Context, c controller.AppController) error {
+	result, err := c.Microservice.GetMicroservice(ctx)
 	if err != nil {
-		panic(err)
+		log.Error(err.Error())
 	}
 
-	return remote, nil
-}
-
-func ReverseProxy() *httputil.ReverseProxy {
-	url, _ := getProxyUrl("http://127.0.0.1:9999")
-	return proxy(url)
-}
-
-func Handler(p *httputil.ReverseProxy) func(http.ResponseWriter, *http.Request) {
-	return func(w http.ResponseWriter, r *http.Request) {
-		p.ServeHTTP(w, r)
+	if err := ctx.Bind(&values); !errors.Is(err, nil) {
+		log.Error(err.Error())
 	}
+
+	clientRequest := httpClient()
+
+	body := Body(values)
+
+	reponse := sendRequest(clientRequest, ctx, result, body)
+
+	return reponse
 }
 
-/* func NewPeopleHandler() http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+func httpClient() *http.Client {
+	client := &http.Client{Timeout: 10 * time.Second}
+	return client
+}
 
-		//fmt.Fprintln(w, "This is the people handler.", r.RequestURI)
-		url, _ := getProxyUrl("http://127.0.0.1:2000")
-		proxy(url)
-	})
-} */
+func Body(values map[string]string) []byte {
+
+	jsonData, _ := json.Marshal(values)
+
+	return jsonData
+
+}
+
+func sendRequest(client *http.Client, ctx echo.Context, microservice *entities.Microservice, jsonData []byte) error {
+
+	endpoint := microservice.Api + "" + microservice.Path
+
+	method := microservice.Method
+
+	fmt.Println()
+
+	req, err := http.NewRequest(method, endpoint, bytes.NewBuffer(jsonData))
+	if err != nil {
+		return ctx.JSON(400, fmt.Sprintf("Error Occurred. %v", err))
+	}
+
+	response, err := client.Do(req)
+	if err != nil {
+		return ctx.JSON(400, fmt.Sprintf("Error sending request to API endpoint. %v", err))
+	}
+
+	// Close the connection to reuse it
+	defer response.Body.Close()
+
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return ctx.JSON(400, fmt.Sprintf("Couldn't parse response body. %+v", err))
+	}
+
+	return ctx.JSONBlob(200, body)
+}
