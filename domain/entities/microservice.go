@@ -14,15 +14,17 @@ type Microservice struct {
 	Path    string    `json:"path"`
 	Method  string    `json:"method"`
 	Iduser  string    `json:"iduser"`
-	User    []User    `json:"user"`
+	User    *User     `json:"user"`
 	State   bool      `json:"state"`
 	Created time.Time `json:"created"`
 	Updated time.Time `json:"updated"`
 }
 
-func NewMicroservice(api string, path string, method string, iduser string) (*Microservice, error) {
+func NewMicroservice(name string, version string, api string, path string, method string, iduser string) (*Microservice, error) {
 
 	microservice := &Microservice{
+		Name:    name,
+		Version: version,
 		Api:     api,
 		Path:    path,
 		Method:  method,
