@@ -7,38 +7,44 @@ import (
 
 	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/injection"
 	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/utils/api/handler"
+
+	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/utils/api/middleware"
 	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/utils/database"
-	"github.com/gorilla/mux"
+	"github.com/labstack/echo"
+	echo_middleware "github.com/labstack/echo/middleware"
 )
 
-var public_server = mux.NewRouter()
+var public_server = echo.New()
 
-//var e = echo.New()
+var private_server = echo.New()
 
 func main() {
 
 	db := database.ConnectionDB()
 	i := injection.NewRegistry(db)
 
-	handler.RouteMicroserviceHandler(public_server, i.NewAppController())
+	public_server.Use(echo_middleware.Logger())
+	public_server.Use(echo_middleware.Recover())
 
-	handler.RouteServiceHandler(public_server, i.NewAppController())
+	middleware.RegistryMiddlewareBasicAuth(private_server, i.NewAppController())
 
-	//middleware.RegistryMiddleware(private_server, i.NewAppController())
-	//	handler.RouteMicroserviceHandler(private_server, i.NewAppController())
+	handler.RouteMicroserviceHandler(private_server, i.NewAppController())
 
-	/* 	go func() {
-	   		fmt.Println("Running Server A")
-	   		if err := private_server.Start(":8080"); err != http.ErrServerClosed {
-	   			log.Fatal(err)
-	   		}
-	   	}()
-	*/
+	handler.RouteUserHandler(public_server, i.NewAppController())
+
+	go func() {
+		fmt.Println("Running Server A")
+		fmt.Println("Server started at port 8080")
+		if err := private_server.Start(":8080"); err != http.ErrServerClosed {
+			log.Println("Not Running Server A...", err.Error())
+		}
+	}()
+
 	fmt.Println("Running Server B")
-	fmt.Println("Server started at port 9990")
-	err := http.ListenAndServe(":9990", public_server)
+	fmt.Println("Server started at port 8081")
+	err := public_server.Start(":8081")
 
 	if err != nil {
-		log.Println("Not Running Server...", err.Error())
+		log.Println("Not Running Server B...", err.Error())
 	}
 }
