@@ -4,28 +4,32 @@ import (
 	"crypto/subtle"
 
 	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/interface/controller"
-	"github.com/labstack/echo"
-	"github.com/labstack/echo/middleware"
+	"github.com/labstack/echo/v4"
 )
 
-func RegistryMiddlewareBasicAuth(e *echo.Echo, c controller.AppController) *echo.Echo {
+func RegistryMiddlewareBasicAuth(e *echo.Echo, c controller.AppController) echo.MiddlewareFunc {
 
-	e.Use(middleware.Logger())
-	e.Use(middleware.Recover())
+	return func(next echo.HandlerFunc) echo.HandlerFunc {
+		return func(context echo.Context) error {
 
-	e.Use(middleware.BasicAuth(func(username, password string, context echo.Context) (bool, error) {
+			username, password, ok := context.Request().BasicAuth()
 
-		users, _ := c.User.AuthBasicUser(username, password, context)
+			if !ok {
+				return context.JSON(401, "Unauthorized.")
+			}
 
-		result := users.VerifyPassword(password)
+			users, err := c.User.AuthBasicUser(username, password, context)
 
-		if subtle.ConstantTimeCompare([]byte(username), []byte(users.Username)) == 1 && result {
-			return true, nil
+			if err != nil {
+				return context.JSON(401, "Unauthorized.")
+			}
+
+			result := users.VerifyPassword(password)
+
+			if subtle.ConstantTimeCompare([]byte(username), []byte(users.Username)) != 1 && !result {
+				return context.JSON(401, "Unauthorized.")
+			}
+			return next(context)
 		}
-		return false, nil
-
-	}))
-
-	return e
-
+	}
 }
