@@ -3,28 +3,26 @@ package proxy
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"time"
 
 	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/domain/entities"
 	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/interface/controller"
-	"github.com/labstack/echo"
-	"github.com/labstack/gommon/log"
+	"github.com/labstack/echo/v4"
 )
 
-var values map[string]string
-
 func ReverseProxy(ctx echo.Context, c controller.AppController) error {
+	var values = map[string]string{}
 	result, err := c.Microservice.GetMicroservice(ctx)
 	if err != nil {
-		log.Error(err.Error())
+		log.Fatal("Error get microservice", err.Error())
 	}
 
-	if err := ctx.Bind(&values); !errors.Is(err, nil) {
-		log.Error(err.Error())
+	if err := ctx.Bind(&values); err != nil {
+		log.Fatal("Error Bind", err.Error())
 	}
 
 	clientRequest := httpClient()
@@ -43,7 +41,11 @@ func httpClient() *http.Client {
 
 func Body(values map[string]string) []byte {
 
-	jsonData, _ := json.Marshal(values)
+	jsonData, err := json.Marshal(values)
+
+	if err != nil {
+		log.Fatal("Error body", err.Error())
+	}
 
 	return jsonData
 
@@ -51,11 +53,9 @@ func Body(values map[string]string) []byte {
 
 func sendRequest(client *http.Client, ctx echo.Context, microservice *entities.Microservice, jsonData []byte) error {
 
-	endpoint := microservice.Api + "" + microservice.Path
+	endpoint := microservice.Api + "" + microservice.Endpoint
 
 	method := microservice.Method
-
-	fmt.Println()
 
 	req, err := http.NewRequest(method, endpoint, bytes.NewBuffer(jsonData))
 	if err != nil {
