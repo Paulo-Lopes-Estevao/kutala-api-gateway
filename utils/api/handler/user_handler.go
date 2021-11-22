@@ -2,7 +2,7 @@ package handler
 
 import (
 	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/interface/controller"
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 )
 
 func RouteUserHandler(e *echo.Echo, c controller.AppController) *echo.Echo {
