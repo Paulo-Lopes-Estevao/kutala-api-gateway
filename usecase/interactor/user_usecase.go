@@ -67,10 +67,14 @@ func (usecase *userUseCase) SearchUuid(uuid string, user *entities.User) (*entit
 
 func (usecase *userUseCase) CreateMicroService(microservice *entities.Microservice) (*entities.Microservice, error) {
 
-	data, err := entities.NewMicroservice(microservice.Name, microservice.Version, microservice.Api, microservice.Path, microservice.Method, microservice.Iduser)
+	data, err := entities.NewMicroservice(microservice.Name, microservice.Version, microservice.Api, microservice.Endpoint, microservice.Type, microservice.Method, microservice.Iduser)
 
 	if err != nil {
 		return nil, err
+	}
+
+	if !data.VerifyTypeProtocolComunication(microservice.Type) {
+		return nil, fmt.Errorf("Types of API protocols Does not exist")
 	}
 
 	microservices, err := usecase.microserviceRepository.InsertMicroservice(data)
