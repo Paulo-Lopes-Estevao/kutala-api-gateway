@@ -8,7 +8,7 @@ import (
 const DB_USERNAME = "postgres"
 const DB_PASSWORD = "postgres"
 const DB_NAME = "kutalagateway"
-const DB_HOST = "localhost"
+const DB_HOST = "db"
 const DB_PORT = "5432"
 
 func ConnectionDB() *gorm.DB {
