@@ -1,46 +1,50 @@
-version: '3'
+version: '3.9'
 
 services:
-  db:
-   image: postgres:9.4
-   container_name: kutala-postgres
-   restart: always
-   deploy:
-      replicas: 3
-   tty: true
-   volumes:
-     - ./utils/database/postgresql/.pgdata:/var/lib/postgresql/data
-   environment:
-     - POSTGRES_DB=postgres
-     - POSTGRES_USER=postgres
-     - POSTGRES_PASSWORD=postgres
-   ports:
-     - "5432:5432"
-   networks:
-      - postgres
 
-  
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: kutala-pgadmin
+  golang:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: kutala-golang
     restart: always
-    deploy:
-      replicas: 3
-    tty: true
-    volumes:
-      - ./utils/database/postgresql/.pgadmin:/var/lib/pgadmin
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=pl1745240@gmail.com
-      - PGADMIN_DEFAULT_PASSWORD=123456
     ports:
-      - "8000:80"
+      - '9000:9000'
     networks:
-      - postgres
+      - host
+    depends_on:
+      - prometheus
+      - db
+
+  db:
+    image: postgres:9.4
+    container_name: kutala-postgres
+    tty: true
+    restart: always
+    volumes:
+      - kutala-postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=kutalagateway
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - host
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: kutala-prometheus
+    restart: always
+    volumes:
+      - ./prometheus/:/etc/prometheus/
+      - kutala-prometheus:/prometheus
+    ports:
+      - 9090:9090
 
 networks:
-  postgres:
-    driver: bridge
+  host: {}
 
 volumes:
   kutala-postgres:
-  kutala-pgadmin:
+  kutala-prometheus:
