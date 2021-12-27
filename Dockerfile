@@ -8,7 +8,7 @@ ENV GO111MODULE=on
 ENV CGO_ENABLED=0
 ENV GOARCH=amd64
 
-RUN go mod init github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway
+RUN go mod init github.com/Paulo-Lopes-Estevao/kutala-api-gateway
 
 COPY . /go/src/kutala/
 
