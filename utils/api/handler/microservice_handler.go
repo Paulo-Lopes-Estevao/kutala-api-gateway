@@ -1,9 +1,9 @@
 package handler
 
 import (
-	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/interface/controller"
-	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/utils/api/middleware"
-	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/utils/api/proxy"
+	"github.com/Paulo-Lopes-Estevao/kutala-api-gateway/interface/controller"
+	"github.com/Paulo-Lopes-Estevao/kutala-api-gateway/utils/api/middleware"
+	"github.com/Paulo-Lopes-Estevao/kutala-api-gateway/utils/api/proxy"
 	"github.com/labstack/echo/v4"
 )
 

@@ -4,9 +4,9 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/domain/entities"
-	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/interface/presenter"
-	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/usecase/interactor"
+	"github.com/Paulo-Lopes-Estevao/kutala-api-gateway/domain/entities"
+	"github.com/Paulo-Lopes-Estevao/kutala-api-gateway/interface/presenter"
+	"github.com/Paulo-Lopes-Estevao/kutala-api-gateway/usecase/interactor"
 )
 
 type MicroserviceControllerInterface interface {

@@ -3,7 +3,7 @@ package middleware
 import (
 	"crypto/subtle"
 
-	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/interface/controller"
+	"github.com/Paulo-Lopes-Estevao/kutala-api-gateway/interface/controller"
 	"github.com/labstack/echo/v4"
 )
 

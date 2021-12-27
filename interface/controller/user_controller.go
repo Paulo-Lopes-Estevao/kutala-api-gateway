@@ -4,8 +4,8 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/domain/entities"
-	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/usecase/interactor"
+	"github.com/Paulo-Lopes-Estevao/kutala-api-gateway/domain/entities"
+	"github.com/Paulo-Lopes-Estevao/kutala-api-gateway/usecase/interactor"
 )
 
 type UserControllerInterface interface {

@@ -9,8 +9,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/domain/entities"
-	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/interface/controller"
+	"github.com/Paulo-Lopes-Estevao/kutala-api-gateway/domain/entities"
+	"github.com/Paulo-Lopes-Estevao/kutala-api-gateway/interface/controller"
 	"github.com/labstack/echo/v4"
 )
 

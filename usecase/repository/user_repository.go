@@ -1,6 +1,6 @@
 package repository
 
-import "github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/domain/entities"
+import "github.com/Paulo-Lopes-Estevao/kutala-api-gateway/domain/entities"
 
 type UserRepositoryInterface interface {
 	InsertUser(User *entities.User) (*entities.User, error)

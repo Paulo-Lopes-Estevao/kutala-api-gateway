@@ -3,7 +3,7 @@ package entities_test
 import (
 	"testing"
 
-	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/domain/entities"
+	"github.com/Paulo-Lopes-Estevao/kutala-api-gateway/domain/entities"
 	"github.com/bxcodec/faker/v3"
 	"github.com/stretchr/testify/require"
 )

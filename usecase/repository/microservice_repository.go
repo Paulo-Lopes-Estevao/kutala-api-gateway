@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/domain/entities"
+	"github.com/Paulo-Lopes-Estevao/kutala-api-gateway/domain/entities"
 )
 
 type MicroserviceRepositoryInterface interface {

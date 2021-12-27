@@ -1,6 +1,6 @@
 package presenter
 
-import "github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/domain/entities"
+import "github.com/Paulo-Lopes-Estevao/kutala-api-gateway/domain/entities"
 
 func Response(userservice *entities.Microservice, User *entities.User) *entities.Microservice {
 

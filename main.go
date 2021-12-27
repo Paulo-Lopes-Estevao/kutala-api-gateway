@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/injection"
+	"github.com/Paulo-Lopes-Estevao/kutala-api-gateway/injection"
 
-	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/utils/api/handler"
-	"github.com/Paulo-Lopes-Estevao/NZIMBUPAY-api-gateway/utils/database"
+	"github.com/Paulo-Lopes-Estevao/kutala-api-gateway/utils/api/handler"
+	"github.com/Paulo-Lopes-Estevao/kutala-api-gateway/utils/database"
 	"github.com/labstack/echo-contrib/prometheus"
 	"github.com/labstack/echo/v4"
 )
